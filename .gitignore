@@ -208,3 +208,6 @@ __marimo__/
 venv/
 .vscode/
 __pycache__/
+
+# Odoo credentials
+config/odoo_config.py
