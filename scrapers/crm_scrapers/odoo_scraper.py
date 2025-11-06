@@ -161,7 +161,16 @@ class OdooScraper(BaseScraper):
         page.route("**/*", self.block_resources)
         
         page.goto(self.po_list_url)
-        page.wait_for_selector('tr.o_data_row', timeout=30000)
+        self.logger.info(f"Navigated to: {page.url}")
+        
+        try:
+            page.wait_for_selector('tr.o_data_row', timeout=30000)
+        except Exception as e:
+            self.logger.error(f"Failed to find rows. URL: {page.url}, Title: {page.title()}")
+            page.screenshot(path='output/debug_screenshot.png')
+            self.logger.error("Screenshot saved to output/debug_screenshot.png")
+            browser.close()
+            raise
         
         # Navigate to correct page
         for _ in range(page_num - 1):
